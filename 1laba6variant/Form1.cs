@@ -16,5 +16,12 @@ namespace _1laba6variant
         {
             InitializeComponent();
         }
+
+     
+
+        private void SolveBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

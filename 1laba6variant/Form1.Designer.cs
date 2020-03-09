@@ -28,13 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SolveBtn = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // SolveBtn
+            // 
+            this.SolveBtn.Location = new System.Drawing.Point(318, 73);
+            this.SolveBtn.Name = "SolveBtn";
+            this.SolveBtn.Size = new System.Drawing.Size(226, 126);
+            this.SolveBtn.TabIndex = 0;
+            this.SolveBtn.Text = "Рассчитать интеграл по методу Симпсона";
+            this.SolveBtn.UseVisualStyleBackColor = true;
+            this.SolveBtn.Click += new System.EventHandler(this.SolveBtn_Click);
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.Controls.Add(this.SolveBtn);
+            this.Name = "Form1";
+            this.Text = "Левочкин и Кропотов (гр. 3-46)";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button SolveBtn;
     }
 }
 
