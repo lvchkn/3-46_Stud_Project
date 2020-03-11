@@ -19,7 +19,7 @@ namespace _1laba6variant
             for (int k = 2; k < n; k += 2)
             {
                 I2 += F(a + k * h);
-                I4 += F(a + (k - 1) * h);
+                I4 += F(a + (k + 1) * h);
             }
             s = F(a) + F(b) + 4 * I4 + 2 * I2;
             s *= h / 3;
@@ -28,17 +28,17 @@ namespace _1laba6variant
 
         }
 
-        public double Rectangle(double a, double b, double h)
+        public double Rectangle(double a, double b, double n)
         {
             float k = 0.5f;
-            double N = (b - a) / h;
+            double h = (b - a) / n;
             double sumrect = 0;
 
             a += h * k;
 
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < n; i++)
             {
-                sumrect += F(a + h * i);
+                sumrect += F(a + (h * i));
             }
 
             return h * sumrect;
