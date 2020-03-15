@@ -2,44 +2,34 @@
 
 namespace _1laba6variant
 {
-    public class Solution : IProgInterface
+    class Solution : ProgInterface
     {
-       /* public double F(double x)
+        public double F(double x)
         {
             return (322 * x) - Math.Log(11 * x) - 2;
-        }*/
+        }
 
 
-        public double Simpson(double a, double b, double n, Func<double, double> func)
+        public double Simpson(double a, double b, double n)
         {
-            if (n < 0)
-            {
-                throw new ArgumentException();
-            }
-
             double s = 0, h = (b - a) / n;
 
-            double I2 = 0, I4 = func(a + h);
+            double I2 = 0, I4 = F(a + h);
 
             for (int k = 2; k < n; k += 2)
             {
-                I2 += func(a + k * h);
-                I4 += func(a + (k + 1) * h);
+                I2 += F(a + k * h);
+                I4 += F(a + (k + 1) * h);
             }
-            s = func(a) + func(b) + 4 * I4 + 2 * I2;
+            s = F(a) + F(b) + 4 * I4 + 2 * I2;
             s *= h / 3;
 
             return s;
 
         }
 
-        public double Rectangle(double a, double b, double n, Func<double, double> func)
+        public double Rectangle(double a, double b, double n)
         {
-            if (n < 0)
-            {
-                throw new ArgumentException();
-            }
-
             float k = 0.5f;
             double h = (b - a) / n;
             double sumrect = 0;
@@ -48,7 +38,7 @@ namespace _1laba6variant
 
             for (int i = 0; i < n; i++)
             {
-                sumrect += func(a + (h * i));
+                sumrect += F(a + (h * i));
             }
 
             return h * sumrect;

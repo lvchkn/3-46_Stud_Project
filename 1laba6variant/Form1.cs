@@ -19,7 +19,7 @@ namespace _1laba6variant
             double b = Convert.ToDouble(textBoxB.Text);
             double n = Convert.ToDouble(textBoxN.Text);
 
-            labelSimpRes.Text = Convert.ToString(Math.Round(S.Simpson(a, b, n, x => (322 * x) - Math.Log(11 * x) - 2), 3));
+            labelSimpRes.Text = Convert.ToString(Math.Round(S.Simpson(a, b, n), 3));
         }
 
         private void SimpBtn_Click(object sender, EventArgs e)
@@ -35,7 +35,7 @@ namespace _1laba6variant
             double b = Convert.ToDouble(textBoxB.Text);
             double n = Convert.ToDouble(textBoxN.Text);
 
-            labelRectRes.Text = Convert.ToString(Math.Round(R.Rectangle(a, b, n, x => (322 * x) - Math.Log(11 * x) - 2), 3));
+            labelRectRes.Text = Convert.ToString(Math.Round(R.Rectangle(a, b, n), 3));
         }
 
         private void RectBtn_Click(object sender, EventArgs e)
@@ -49,13 +49,13 @@ namespace _1laba6variant
             rtbS.Name = "richTextBoxHintSimp1";
             rtbS.SetBounds(560, 180, 130, 100);
             rtbS.Text = "Условия применения метода Симпсона – N должно быть кратно 2. Алгебраический порядок точности метода - 4";
-            Controls.Add(rtbS);
+            this.Controls.Add(rtbS);
 
             Features rtbR = new Features();
             rtbR.Name = "richTextBoxHintRect1";
             rtbR.SetBounds(560, 290, 130, 100);
             rtbR.Text = "Алгебраический порядок точности метода средних прямоугольников - 1";
-            Controls.Add(rtbR);
+            this.Controls.Add(rtbR);
 
         }
     }
