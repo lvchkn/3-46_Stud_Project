@@ -1,25 +1,50 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Threading;
 
 namespace _1laba6variant
 {
     public partial class Form1 : Form
     {
+        CancellationTokenSource _cts;
         public Form1()
         {
             InitializeComponent();
 
         }
-
-        private void Simpson()
+        private async void Simpson()
         {
             Solution S = new Solution();
 
             double a = Convert.ToDouble(textBoxA.Text);
             double b = Convert.ToDouble(textBoxB.Text);
-            double n = Convert.ToDouble(textBoxN.Text);
+            int n = Convert.ToInt32(textBoxN.Text);
 
-            labelSimpRes.Text = Convert.ToString(Math.Round(S.Simpson(a, b, n, x => (322 * x) - Math.Log(11 * x) - 2), 3));
+            pb.Value = 0;
+            Stopwatch sw = new Stopwatch();
+            _cts = new CancellationTokenSource();
+            Progress<int> progress = new Progress<int>();
+            progress.ProgressChanged += (sender, e) => { pb.Value = e; };
+
+            double t = 0.0;
+            sw.Start();
+
+            try
+            {
+                t = await (S.Simpson(a, b, n, x =>
+                     (322 * x) - Math.Log(11 * x) - 2, progress, _cts.Token));
+
+                sw.Stop();
+
+                labelSimpRes.Text = Convert.ToString(Math.Round(t, 3));                
+            }
+            catch (OperationCanceledException)
+            {
+                labelSimpRes.Text = "Отмена!";
+            }                    
+            
+            lblSimpTime.Text = Convert.ToString(sw.Elapsed);
         }
 
         private void SimpBtn_Click(object sender, EventArgs e)
@@ -27,15 +52,39 @@ namespace _1laba6variant
             Simpson();
         }
 
-        private void Rectangle()
+        private async void Rectangle()
         {
             Solution R = new Solution();
 
             double a = Convert.ToDouble(textBoxA.Text);
             double b = Convert.ToDouble(textBoxB.Text);
-            double n = Convert.ToDouble(textBoxN.Text);
+            int n = Convert.ToInt32(textBoxN.Text);
 
-            labelRectRes.Text = Convert.ToString(Math.Round(R.Rectangle(a, b, n, x => (322 * x) - Math.Log(11 * x) - 2), 3));
+            pb.Value = 0;
+            Stopwatch sw = new Stopwatch();
+            _cts = new CancellationTokenSource();
+            Progress<int> progress = new Progress<int>();
+            progress.ProgressChanged += (sender, e) => { pb.Value = e; };
+
+            double t = 0.0;
+            sw.Start();
+
+            try
+            {
+                t = await (R.Rectangle(a, b, n, x =>
+               (322 * x) - Math.Log(11 * x) - 2, progress, _cts.Token));
+
+                sw.Stop();
+
+                labelRectRes.Text = Convert.ToString(Math.Round(t, 3));
+            }
+
+            catch (OperationCanceledException)
+            {
+                labelRectRes.Text = "Отмена!";
+            }
+
+            lblRectTimeRes.Text = Convert.ToString(sw.Elapsed);
         }
 
         private void RectBtn_Click(object sender, EventArgs e)
@@ -43,20 +92,112 @@ namespace _1laba6variant
             Rectangle();
         }
 
-        private void textBoxN_TextChanged(object sender, EventArgs e)
+        private async void ParSimpson()
         {
-            Features rtbS = new Features();
-            rtbS.Name = "richTextBoxHintSimp1";
-            rtbS.SetBounds(560, 180, 130, 100);
-            rtbS.Text = "Условия применения метода Симпсона – N должно быть кратно 2. Алгебраический порядок точности метода - 4";
-            Controls.Add(rtbS);
+            Solution S = new Solution();
 
-            Features rtbR = new Features();
-            rtbR.Name = "richTextBoxHintRect1";
-            rtbR.SetBounds(560, 290, 130, 100);
-            rtbR.Text = "Алгебраический порядок точности метода средних прямоугольников - 1";
-            Controls.Add(rtbR);
+            double a = Convert.ToDouble(textBoxA.Text);
+            double b = Convert.ToDouble(textBoxB.Text);
+            int n = Convert.ToInt32(textBoxN.Text);
 
+            Stopwatch sw = new Stopwatch();
+            pb.Value = 0;
+            _cts = new CancellationTokenSource();
+            Progress<int> progress = new Progress<int>();
+            progress.ProgressChanged += (sender, e) => { pb.Value = e; };
+
+            double t = 0.0;
+            sw.Start();
+
+            try
+            {
+                t = await (S.ParallelSimpson(a, b, n, x =>
+                   (322 * x) - Math.Log(11 * x) - 2, progress, _cts.Token));
+
+                sw.Stop();
+
+                lblParSimpRes.Text = Convert.ToString(Math.Round(t, 3));
+            }
+
+            catch (OperationCanceledException)
+            {
+                lblParSimpRes.Text = "Отмена!";
+            }
+
+            lblParSimpTime.Text = Convert.ToString(sw.Elapsed);
+        }
+
+        private void btnParSimp_Click(object sender, EventArgs e)
+        {
+            ParSimpson();
+        }
+
+        private async void ParRectangle()
+        {
+            Solution S = new Solution();
+
+            double a = Convert.ToDouble(textBoxA.Text);
+            double b = Convert.ToDouble(textBoxB.Text);
+            int n = Convert.ToInt32(textBoxN.Text);
+
+            Stopwatch sw = new Stopwatch();
+            pb.Value = 0;
+            _cts = new CancellationTokenSource();
+            Progress<int> progress = new Progress<int>();
+            progress.ProgressChanged += (sender, e) => { pb.Value = e; };
+
+            double t = 0.0;
+            sw.Start();
+
+            try
+            {
+                t = await (S.ParallelRectangle(a, b, n, x =>
+                 (322 * x) - Math.Log(11 * x) - 2, progress, _cts.Token));
+
+                sw.Stop();
+
+                lblParRectRes.Text = Convert.ToString(Math.Round(t, 3));
+            }
+
+            catch (OperationCanceledException)
+            {
+                lblParRectRes.Text = "Отмена!";
+            }
+
+            lblParRectTimeRes.Text = Convert.ToString(sw.Elapsed);
+        }
+
+        private void btnParRect_Click(object sender, EventArgs e)
+        {
+            ParRectangle();
+        }
+
+        private void Cancellation()
+        {
+            if (_cts != null)
+            {
+                _cts.Cancel();
+            }
+        }
+
+        private void CancelSimp_Click(object sender, EventArgs e)
+        {
+            Cancellation();
+        }
+
+        private void CancelParSimp_Click(object sender, EventArgs e)
+        {
+            Cancellation();
+        }
+
+        private void CancelRect_Click(object sender, EventArgs e)
+        {
+            Cancellation();
+        }
+
+        private void CancelParRect_Click(object sender, EventArgs e)
+        {
+            Cancellation();
         }
     }
 }
